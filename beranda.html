@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinjaman Online</title>
+    <link rel="stylesheet" href="beranda.css">
+</head>
+<body>
+    <main class="container">
+        <div class="banner">
+            <img src="WhatsApp Image 2025-02-14 at 19.07.34.jpeg" alt="Layanan Pinjaman" class="background-image">
+            
+            <!-- Menu overlay -->
+            <div class="menu-overlay">
+                <a id="profilPeminjam" class="menu-item profil">
+                    <img src="5577995.png" alt="Profil" class="icon">
+                    <span class="profil-text">Profil Peminjam</span>
+                </a>
+                <a id="bayarSekarang" class="menu-item bayar">
+                    <img src="bayarwoi.png" alt="Bayar" class="icon">
+                    <span class="bayar-text">Bayar Sekarang</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Fungsi untuk mengambil parameter ID dari URL
+        function getQueryParam(param) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Ambil ID Nasabah dari URL
+        let idNasabah = getQueryParam("id");
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            if (idNasabah) {
+                // Jika ID Nasabah ada, ambil data dari JSONBin
+                const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67b9d2eae41b4d34e4981dcb";  // Ganti dengan URL JSONBin Anda
+                const JSONBIN_API_KEY = "$2a$10$.cxDmrMZuGj4L6.Y3hW.KOAM2ebJreiKeUXBrR29eeCOtKSy7eWWq";  // Ganti dengan API Key Anda
+                
+                try {
+                    // Ambil data dari JSONBin
+                    let response = await fetch(JSONBIN_URL, {
+                        method: "GET",
+                        headers: {
+                            "X-Master-Key": JSONBIN_API_KEY
+                        }
+                    });
+                    let data = await response.json();
+                    let daftarNasabah = data.record.records || [];
+                    
+                    // Cari nasabah berdasarkan ID
+                    let nasabah = daftarNasabah.find(n => n.id === idNasabah);
+                    
+                    if (nasabah) {
+                        // Arahkan ke halaman profil dan bayar sesuai ID
+                        document.getElementById("profilPeminjam").addEventListener("click", function(event) {
+                            window.location.href = `pembayaran.html?id=${idNasabah}`;
+                        });
+
+                        document.getElementById("bayarSekarang").addEventListener("click", function(event) {
+                            window.location.href = `bayarsekarang.html?id=${idNasabah}`;
+                        });
+                    } else {
+                        alert("Data Nasabah tidak ditemukan!");
+                    }
+                } catch (error) {
+                    console.error("Terjadi kesalahan saat mengambil data nasabah: ", error);
+                    alert("Gagal memuat data nasabah.");
+                }
+            } else {
+                // Jika tidak ada ID, tampilkan pesan error
+                alert("ID Nasabah tidak ditemukan! Silakan pastikan ID nasabah tersedia dalam URL.");
+            }
+        });
+    </script>
+</body>
+</html>

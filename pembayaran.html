@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Halaman Pembayaran</title>
+  <link rel="stylesheet" href="pembayaran.css">
+</head>
+<body>
+  <main class="container">
+    <h2>DATA NASABAH</h2>
+
+    <!-- Profil Nasabah -->
+    <div id="profilNasabah" class="profil-container">
+      <div class="ktp-photo">
+        <img id="ktpImage" src="" alt="Foto KTP">
+      </div>
+      <div class="info-container">
+        <div class="info-card"><strong>Nama</strong><p id="namaNasabah"></p></div>
+        <div class="info-card"><strong>Jumlah Pinjaman</strong><p>Rp <span id="jumlahPembayaran"></span></p></div>
+        <div class="info-card"><strong>Waktu Pinjaman</strong><p><span id="waktuPinjaman"></span> Bulan</p></div>
+        <div class="info-card"><strong>No Handphone</strong><p id="noHandphone"></p></div>
+        <div class="info-card"><strong>Bank Penerima Pinjaman</strong><p id="bankPenerima"></p></div>
+        <div class="info-card"><strong>Virtual Account</strong><p id="virtualAccount"></p></div>
+      </div>
+    </div>
+
+    <!-- Jika data tidak ditemukan -->
+    <div id="errorMessage" class="error-message" style="display: none;">
+      <p>Data nasabah tidak ditemukan! Kembali ke beranda...</p>
+    </div>
+
+    <!-- Tombol Kembali ke Beranda & Bayar Sekarang -->
+    <div class="button-group">
+      <!-- Tombol Kembali ke Beranda yang membawa parameter id -->
+      <a id="backToHome" href="#" class="back-home">Kembali ke Beranda</a>
+      <a id="bayarSekarang" href="#" class="pay-now">Bayar Sekarang</a>
+    </div>
+  </main>
+
+  <script>
+    // Fungsi untuk mendapatkan parameter ID dari URL
+    function getQueryParam(param) {
+      let urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Ambil ID Nasabah dari URL
+    let idNasabah = getQueryParam("id");
+
+    // Ambil daftar nasabah dari JSONBin atau localStorage
+    async function loadDataNasabah() {
+      const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67b9d2eae41b4d34e4981dcb";
+      const JSONBIN_API_KEY = "$2a$10$.cxDmrMZuGj4L6.Y3hW.KOAM2ebJreiKeUXBrR29eeCOtKSy7eWWq";
+      
+      try {
+        let response = await fetch(JSONBIN_URL, {
+          method: "GET",
+          headers: {
+            "X-Master-Key": JSONBIN_API_KEY
+          }
+        });
+        let data = await response.json();
+        let daftarNasabah = data.record.records || [];
+
+        // Mencari nasabah berdasarkan ID yang diteruskan
+        let nasabah = daftarNasabah.find(nasabah => nasabah.id === idNasabah);
+
+        if (nasabah) {
+          // Update profil nasabah di halaman
+          document.getElementById("ktpImage").src = nasabah.ktp;
+          document.getElementById("namaNasabah").innerText = nasabah.nama;
+          document.getElementById("waktuPinjaman").innerText = nasabah.waktuPinjaman;
+          document.getElementById("noHandphone").innerText = nasabah.noHandphone;
+          document.getElementById("bankPenerima").innerText = nasabah.bank;
+          
+          // Format jumlah pinjaman sebagai Rupiah
+          document.getElementById("jumlahPembayaran").innerText = parseInt(nasabah.jumlahPinjaman).toLocaleString("id-ID");
+
+          // Tampilkan Virtual Account jika ada
+          let va = nasabah.virtualAccount || "Tidak tersedia";
+          document.getElementById("virtualAccount").innerText = va;
+
+          // Atur tombol bayar sekarang dengan parameter ID
+          document.getElementById("bayarSekarang").href = `bayarsekarang.html?id=${nasabah.id}`;
+          
+          // Atur tombol kembali ke beranda dengan parameter ID
+          document.getElementById("backToHome").addEventListener("click", function() {
+            window.location.href = `beranda.html?id=${idNasabah}`;
+          });
+        } else {
+          // Sembunyikan profil nasabah & tampilkan pesan error
+          document.getElementById("profilNasabah").style.display = "none";
+          document.getElementById("errorMessage").style.display = "block";
+
+          // Kembali ke beranda setelah beberapa detik
+          setTimeout(() => {
+            window.location.href = "beranda.html";
+          }, 3000);
+        }
+      } catch (error) {
+        alert("Terjadi kesalahan saat memuat data nasabah.");
+      }
+    }
+
+    loadDataNasabah();
+  </script>
+</body>
+</html>

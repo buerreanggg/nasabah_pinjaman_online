@@ -1,0 +1,148 @@
+/* Reset dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body: background gradien halus */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #ffffff);
+    overflow: hidden; /* Menghindari scroll yang tidak diinginkan */
+  }
+  
+  /* Container utama dengan posisi tetap di tengah layar */
+  .container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* Payment Box: kartu konten */
+  .payment-box {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Virtual Account: menggunakan gradien biru ke putih untuk kesan profesional */
+  .va-number {
+    background: linear-gradient(135deg, #00b4d8, #ffffff);
+    color: #0077b6;
+    text-align: center;
+    padding: 14px;
+    border-radius: 5px;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    cursor: pointer;
+    border: 2px solid #00b4d8;
+  }
+  
+  /* Informasi Pembayaran */
+  .payment-info {
+    margin-bottom: 20px;
+  }
+  
+  .info-item {
+    background: #ffffff;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    border-left: 4px solid #00b4d8;
+  }
+  
+  /* Panduan Pembayaran */
+  .payment-guide {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-left: 4px solid #00b4d8;
+  }
+  
+  .payment-guide h3 {
+    color: #00b4d8;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .payment-guide ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  /* Tombol Link (Kembali ke Beranda) - tampilannya kecil dan sederhana */
+  .list-button {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+  }
+  
+  .list-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Tombol Konfirmasi Pembayaran dengan tampilan modern */
+  .pay-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+  }
+  
+  .pay-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsivitas */
+  @media (max-width: 480px) {
+    .container {
+      padding: 15px;
+    }
+    
+    .va-number {
+      font-size: 20px;
+      padding: 12px;
+    }
+    
+    .list-button {
+      font-size: 12px;
+      padding: 5px 10px;
+    }
+    
+    .pay-button {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+  

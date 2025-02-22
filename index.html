@@ -1,0 +1,142 @@
+<!DOCTYPE html> 
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <main class="container">
+        <h2>Tambah Nasabah</h2>
+        <form id="nasabahForm">
+            <label for="ktpInput">Foto KTP:</label>
+            <input type="file" id="ktpInput" accept="image/*" required>
+            <img id="ktpPreview" class="ktp-preview" src="" alt="Preview KTP" style="display:none;"><br>
+
+            <label for="nama">Nama:</label>
+            <input type="text" id="nama" required pattern="[A-Za-z ]+" placeholder="Masukkan Nama Lengkap"><br>
+
+            <label for="pinjaman">Jumlah Pinjaman (Rp):</label>
+            <input type="text" id="pinjaman" required placeholder="Masukkan jumlah dalam format 1.000.000"><br>
+
+            <label for="waktu">Waktu Pinjaman (bulan):</label>
+            <input type="number" id="waktu" required min="1"><br>
+
+            <label for="hp">No HP:</label>
+            <input type="tel" id="hp" required pattern="[0-9]+" placeholder="Masukkan No HP"><br>
+
+            <label for="bank">Bank Penerima:</label>
+            <input type="text" id="bank" required placeholder="Masukkan Nama Bank"><br>
+
+            <label for="virtualAccount">Virtual Account:</label>
+            <input type="text" id="virtualAccount" required pattern="[0-9]+" placeholder="Masukkan No. Virtual Account"><br>
+
+            <label for="nomorTagihan">Nomor Tagihan:</label>
+            <input type="text" id="nomorTagihan" required pattern="[A-Za-z0-9]+" placeholder="Masukkan Nomor Tagihan"><br>
+
+            <label for="jumlahBayar">Jumlah Pembayaran per Bulan (Rp):</label>
+            <input type="text" id="jumlahBayar" required placeholder="Masukkan jumlah dalam format 1.000.000"><br>
+
+            <button type="submit">Tambah Nasabah</button>
+        </form>
+        <br>
+        <button onclick="window.location.href='list.html'">Lihat Daftar Nasabah</button>
+    </main>
+
+    <script>
+        const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67b9d2eae41b4d34e4981dcb";
+        const JSONBIN_API_KEY = "$2a$10$.cxDmrMZuGj4L6.Y3hW.KOAM2ebJreiKeUXBrR29eeCOtKSy7eWWq"; // Kunci API Anda
+
+        document.getElementById("ktpInput").addEventListener("change", function(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("ktpPreview").src = e.target.result;
+                    document.getElementById("ktpPreview").style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("nasabahForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            let idNasabah = Date.now().toString();
+            let nama = document.getElementById("nama").value.trim();
+            let jumlahPinjaman = document.getElementById("pinjaman").value.replace(/\./g, "");
+            let waktuPinjaman = document.getElementById("waktu").value;
+            let noHandphone = document.getElementById("hp").value.trim();
+            let bank = document.getElementById("bank").value.trim();
+            let virtualAccount = document.getElementById("virtualAccount").value.trim();
+            let nomorTagihan = document.getElementById("nomorTagihan").value.trim();
+            let jumlahBayar = document.getElementById("jumlahBayar").value.replace(/\./g, "");
+
+            let ktpFile = document.getElementById("ktpInput").files[0];
+            if (!ktpFile) {
+                alert("Silakan unggah foto KTP!");
+                return;
+            }
+
+            let reader = new FileReader();
+            reader.onload = async function(e) {
+                let ktpBase64 = e.target.result;
+
+                let nasabahBaru = {
+                    id: idNasabah,
+                    ktp: ktpBase64,
+                    nama,
+                    jumlahPinjaman,
+                    waktuPinjaman,
+                    noHandphone,
+                    bank,
+                    virtualAccount,
+                    nomorTagihan,
+                    jumlahBayar
+                };
+
+                try {
+                    // Mendapatkan data yang ada saat ini
+                    let getData = await fetch(JSONBIN_URL, {
+                        method: "GET",
+                        headers: {
+                            "X-Master-Key": JSONBIN_API_KEY
+                        }
+                    });
+
+                    if (!getData.ok) {
+                        throw new Error(`Gagal mengambil data: ${getData.statusText}`);
+                    }
+
+                    let data = await getData.json();
+                    let existingRecords = data.record.records || [];
+
+                    // Menambahkan nasabah baru ke data yang ada
+                    existingRecords.push(nasabahBaru);
+
+                    // Mengirimkan data yang sudah diperbarui
+                    let response = await fetch(JSONBIN_URL, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-Master-Key": JSONBIN_API_KEY
+                        },
+                        body: JSON.stringify({ records: existingRecords })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Gagal menyimpan data!");
+                    }
+
+                    alert("Nasabah berhasil ditambahkan!");
+                    window.location.href = `pembayaran.html?id=${idNasabah}`;
+                } catch (error) {
+                    alert("Terjadi kesalahan saat menyimpan data: " + error.message);
+                }
+            };
+            reader.readAsDataURL(ktpFile);
+        });
+    </script>
+</body>
+</html>

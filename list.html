@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Nasabah</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <main class="table-container">
+        <h2>Daftar Nasabah</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Foto KTP</th>
+                    <th>Nama</th>
+                    <th>Jumlah Pinjaman</th>
+                    <th>Virtual Account</th>
+                    <th>Nomor Tagihan</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="nasabahTableBody">
+                <!-- Data akan dimasukkan oleh JavaScript -->
+            </tbody>
+        </table>
+        
+        <div class="button-container">
+            <a href="index.html" class="list-button">Tambah Nasabah</a>
+        </div>
+    </main>
+
+    <script>
+        const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67b9d2eae41b4d34e4981dcb";
+        const JSONBIN_API_KEY = "$2a$10$.cxDmrMZuGj4L6.Y3hW.KOAM2ebJreiKeUXBrR29eeCOtKSy7eWWq";
+
+        async function loadNasabah() {
+            try {
+                let response = await fetch(JSONBIN_URL, {
+                    method: "GET",
+                    headers: {
+                        "X-Master-Key": JSONBIN_API_KEY
+                    }
+                });
+                let data = await response.json();
+                let daftarNasabah = data.record.records || [];
+                
+                const tableBody = document.getElementById("nasabahTableBody");
+                tableBody.innerHTML = "";
+
+                if (daftarNasabah.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Belum ada data nasabah.</td></tr>`;
+                    return;
+                }
+
+                daftarNasabah.forEach(nasabah => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td><img src="${nasabah.ktp}" alt="Foto KTP" class="ktp-img"></td>
+                        <td>${nasabah.nama}</td>
+                        <td>Rp ${new Intl.NumberFormat("id-ID").format(nasabah.jumlahPinjaman)}</td>
+                        <td>${nasabah.virtualAccount}</td>
+                        <td>${nasabah.nomorTagihan}</td>
+                        <td>
+                            <a href="pembayaran.html?id=${nasabah.id}" class="list-button">Lihat</a>
+                            <button class="delete-button" onclick="hapusNasabah('${nasabah.id}')">Hapus</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Gagal memuat data: ", error);
+                alert("Terjadi kesalahan saat mengambil data nasabah.");
+            }
+        }
+
+        async function hapusNasabah(id) {
+            if (!confirm("Apakah Anda yakin ingin menghapus nasabah ini?")) return;
+            try {
+                let response = await fetch(JSONBIN_URL, {
+                    method: "GET",
+                    headers: {
+                        "X-Master-Key": JSONBIN_API_KEY
+                    }
+                });
+                let data = await response.json();
+                let daftarNasabah = data.record.records || [];
+
+                let newRecords = daftarNasabah.filter(nasabah => nasabah.id !== id);
+
+                await fetch(JSONBIN_URL, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Master-Key": JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify({ records: newRecords })
+                });
+
+                alert("Nasabah berhasil dihapus.");
+                loadNasabah();
+            } catch (error) {
+                console.error("Gagal menghapus data: ", error);
+                alert("Terjadi kesalahan saat menghapus data nasabah.");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadNasabah);
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+/* Reset dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Container utama */
+.container {
+    width: 100%;
+    max-width: 420px; /* Ukuran maksimum agar tampilan tetap rapi */
+    position: relative;
+}
+
+/* Banner gambar */
+.banner {
+    position: relative;
+    width: 100%;
+}
+
+.background-image {
+    width: 100%;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Overlay menu di dalam gambar */
+.menu-overlay {
+    position: absolute;
+    bottom: 10px; /* Geser ke bawah */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-around;
+    width: 90%;
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparan */
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Menu item */
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Ikon menu */
+.icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 5px;
+}
+
+/* Warna teks */
+.profil-text {
+    color: #007bff; /* Biru */
+}
+
+.bayar-text {
+    color: #28a745; /* Hijau */
+}

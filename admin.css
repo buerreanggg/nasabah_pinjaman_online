@@ -1,0 +1,162 @@
+/* Reset dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+/* Container utama */
+.container {
+    max-width: 800px;
+    background: #fff;
+    padding: 20px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form input */
+form label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+form input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Tombol utama */
+button {
+    width: 100%;
+    background: #007bff;
+    color: #fff;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Tombol link */
+.list-button {
+    display: block;
+    text-align: center;
+    background: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 15px;
+}
+
+.list-button:hover {
+    background: #218838;
+}
+
+/* Container tabel */
+.table-container {
+    max-width: 1000px;
+    background: white;
+    padding: 20px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background: #007bff;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+table tr:hover {
+    background: #ddd;
+}
+
+/* Tombol aksi */
+.view-button {
+    background: #007bff;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.view-button:hover {
+    background: #0056b3;
+}
+
+.delete-button {
+    background: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background: #c82333;
+}
+
+/* Preview KTP */
+.ktp-preview {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Gambar KTP dalam daftar */
+.ktp-img {
+    width: 80px;
+    height: auto;
+    border-radius: 5px;
+}
