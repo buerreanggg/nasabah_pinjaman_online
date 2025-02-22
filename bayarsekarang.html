@@ -73,7 +73,7 @@
 
                 if (nasabah) {
                     document.getElementById("virtualAccount").innerText = nasabah.virtualAccount || "Tidak tersedia";
-                    document.getElementById("totalBayar").innerText = parseInt(nasabah.jumlahPinjaman || 0).toLocaleString("id-ID");
+                    document.getElementById("totalBayar").innerText = parseInt(nasabah.jumlahBayar || 0).toLocaleString("id-ID");
                     document.getElementById("noTagihan").innerText = nasabah.nomorTagihan || "INV" + new Date().getFullYear() + String(new Date().getMonth() + 1).padStart(2, '0') + String(new Date().getDate()).padStart(2, '0');
                 } else {
                     alert("Data nasabah tidak ditemukan! Kembali ke beranda.");
